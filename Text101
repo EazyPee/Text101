@@ -1,0 +1,98 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class TextController : MonoBehaviour {
+	
+	public Text text;
+	private enum States {cell, sheets_0, mirror, lock_0, sheets_1, cell_mirror, lock_1, freedom};
+	private States myState;
+	
+	// Use this for initialization
+	void Start () {
+		print (myState);
+		myState = States.cell;
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		print (myState);
+		if (myState == States.cell) 				{state_cell ();}	
+		else if ( myState == States.sheets_0) 		{state_sheets_0();}	
+		else if ( myState == States.mirror) 		{state_mirror();}
+		else if ( myState == States.lock_0) 		{state_lock_0();}	
+		else if ( myState == States.sheets_1) 		{state_sheets_1();}
+		else if ( myState == States.cell_mirror) 	{state_cell_mirror();}
+		else if ( myState == States.lock_1) 		{state_lock_1();}	
+		else if ( myState == States.freedom) 		{state_freedom();}
+		
+	}
+	
+	void state_cell () {
+			text.text = "You're in a prison cell.\n" + 
+						"Press S to see the sheets, press L to see the lock " +
+						"and press M to see the mirror.";
+		if ( myState == States.cell) {			
+		if (Input.GetKeyDown(KeyCode.S)) 			{myState = States.sheets_0;}
+			
+		else if (Input.GetKeyDown(KeyCode.M)) 		{myState = States.mirror;}
+		
+		else if (Input.GetKeyDown(KeyCode.L)) 		{myState = States.lock_0;}
+			
+			}
+			
+		else if ( myState == States.cell_mirror ) {
+		
+		if (Input.GetKeyDown(KeyCode.S)) 			{myState = States.sheets_1;}
+			
+		else if (Input.GetKeyDown(KeyCode.L)) 		{myState = States.lock_1;}
+		
+			}
+			
+	}
+		
+	void state_sheets_0 () {
+			text.text = "You can see some sheets";
+		if (Input.GetKeyDown(KeyCode.R)) 	{myState = States.cell;}
+	}
+	
+	void state_mirror () {
+		text.text = "You can see a mirror \n" +
+					"There seems to be a key behind the mirror. Do you wanna pick it up?\n" +
+					"Press P to pick it up";
+		if (Input.GetKeyDown(KeyCode.P)) 		{myState = States.cell_mirror;}
+		else if (Input.GetKeyDown(KeyCode.R)) 	{myState = States.cell;}
+	}
+	
+	void state_lock_0 () {
+		text.text = "You can see a lock on the door";
+		if (Input.GetKeyDown(KeyCode.R)) 	{myState = States.cell;}
+	}
+	
+	void state_cell_mirror () {
+		text.text = "You're still in the cell, but you got a key.\n" + 
+					"Press S to see the sheets, press L to see the lock " + 
+					"and press M to see the mirror. Press R to return.";	
+		if (Input.GetKeyDown(KeyCode.S)) 		{myState = States.sheets_1;}
+		else if (Input.GetKeyDown(KeyCode.L)) 	{myState = States.lock_1;}
+		
+	}
+	
+	void state_lock_1 () {
+		text.text = "You can see a lock on the door. \n" +
+					"Do you wanna use the key?\n" +
+					"Press U to use the key";
+		if (Input.GetKeyDown(KeyCode.U)) 		{myState = States.freedom;}
+		else if (Input.GetKeyDown(KeyCode.R)) 	{myState = States.cell_mirror;}
+	}
+	
+	void state_sheets_1 () {
+		text.text = "You can see some sheets. The key won't but be of any help here.";
+		if (Input.GetKeyDown(KeyCode.R)) 	{myState = States.cell_mirror;}
+	}
+	
+	void state_freedom () {
+		text.text = "You are free!";
+	}
+}
+		
